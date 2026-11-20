@@ -45,7 +45,9 @@ export const DEFAULT_HEAD_SCENE_MANIFEST = Object.freeze({
     firstFrameIndex: 1,
     lastFrameIndex: 236,
     frameCount: 236,
-    frameDurationSeconds: 0.007,
+    // Must match the real per-frame delay encoded in the asset filenames
+    // (24fps master) — the playback clock is driven by this value.
+    frameDurationSeconds: 0.041,
   }),
   maps: Object.freeze({
     high: Object.freeze({

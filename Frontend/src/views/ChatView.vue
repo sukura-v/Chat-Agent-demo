@@ -597,13 +597,18 @@ function prefillScene(sceneId) {
   if (prompt) prefillPrompt(prompt)
 }
 
-function withSequenceTimeout(sequencePromise, timeoutMs = 9000) {
-  // Slow-network guard: a stuck WebP entry sequence must never lock the UI.
-  // Resolving false routes the caller into the existing static fallback.
+function withSequenceTimeout(sequencePromise, timeoutMs = 30000) {
+  // Wedged-loader guard: the frame-gated clock in ChatHeadStudy already
+  // stretches with the network, so this only fires when the sequence promise
+  // itself never settles. Resolving false routes the caller into the existing
+  // static fallback (which now restores the endpoint frame on stop).
+  let timer = null
   return Promise.race([
     Promise.resolve(sequencePromise),
-    new Promise(resolve => setTimeout(() => resolve(false), timeoutMs)),
-  ])
+    new Promise(resolve => {
+      timer = setTimeout(() => resolve(false), timeoutMs)
+    }),
+  ]).finally(() => clearTimeout(timer))
 }
 
 function shouldReduceMotion() {
@@ -767,7 +772,7 @@ async function commitMediaFirstCommit(message) {
   } catch (error) {
     if (commitGeneration !== phaseGeneration || currentEntryGeneration !== entryGeneration) return
     console.warn('[ChatView] media entry falling back to static Chat', error)
-    labLayoutRef.value?.stopEntrySequence?.({ restoreEndpoint: false })
+    labLayoutRef.value?.stopEntrySequence?.({ restoreEndpoint: true })
     finishEntryAsStaticChat()
   }
 }
@@ -1200,7 +1205,7 @@ async function onSelectSession(session) {
       )
       if (localGeneration !== phaseGeneration) return false
       if (!succeeded) {
-        labLayoutRef.value?.stopEntrySequence?.({ restoreEndpoint: false })
+        labLayoutRef.value?.stopEntrySequence?.({ restoreEndpoint: true })
         finishEntryAsStaticChat()
         return false
       }

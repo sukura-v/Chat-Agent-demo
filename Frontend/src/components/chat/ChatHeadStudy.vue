@@ -225,7 +225,9 @@ function handlePointerEnd(event) {
   runtime?.resetPointer?.()
 }
 
-const SEQUENCE_WINDOW_RADIUS = 3
+// Sliding decode window around the drawn frame. Larger radius trades ~3.5MB
+// of decoded bitmap memory per frame for fewer load stalls mid-transition.
+const SEQUENCE_WINDOW_RADIUS = 8
 
 function sequenceBounds(direction = 'forward') {
   const sequence = manifestRef.value?.sequence
@@ -452,9 +454,15 @@ async function playSequence({ direction = 'forward' } = {}) {
       throw new Error(`Sequence start frame failed to draw: ${start}`)
     }
     let lastDrawnFrameIndex = start
-    const startedAt = performance.now()
     const frameDurationMs = Math.max(1, Number(sequence.frameDurationSeconds || 0.082) * 1000)
-    const totalDurationMs = frameDurationMs * Math.max(sequence.frameCount - 1, 1)
+    // Frame-gated clock: the clock advances one frame per manifest delay only
+    // when the next bitmap is already decoded. It never skips scheduled frames
+    // and never races a wall-clock deadline — a slow network stretches the
+    // transition instead of aborting it. The per-frame stall guard exists only
+    // to catch a genuinely wedged loader (fetch that never settles).
+    const frameStallLimitMs = 20000
+    let lastDrawnAt = performance.now()
+    let stallStartedAt = null
     let windowFailure = null
     await new Promise((resolve, reject) => {
       const tick = now => {
@@ -466,38 +474,37 @@ async function playSequence({ direction = 'forward' } = {}) {
           reject(windowFailure)
           return
         }
-        const elapsed = Math.max(0, now - startedAt)
-        const elapsedProgress = Math.min(1, elapsed / totalDurationMs)
-        const clockProgress = forward ? elapsedProgress : 1 - elapsedProgress
-        const elapsedIndex = Math.floor(elapsed / frameDurationMs)
-        const targetFrameIndex = Math.min(
-          Math.max(start + elapsedIndex * step, Math.min(start, end)),
-          Math.max(start, end),
-        )
+        const targetFrameIndex = lastDrawnFrameIndex + step
         const loadPromises = maintainSequenceWindow(targetFrameIndex, direction, controller.signal)
         Promise.all(loadPromises).catch(error => { windowFailure = error })
 
-        if (targetFrameIndex !== lastDrawnFrameIndex && sequenceBitmaps.has(targetFrameIndex)) {
+        if (!sequenceBitmaps.has(targetFrameIndex)) {
+          // Not decoded yet: hold the current frame and wait — never skip.
+          if (stallStartedAt === null) stallStartedAt = now
+          else if (now - stallStartedAt >= frameStallLimitMs) {
+            reject(new Error(`Sequence frame wait exceeded limit: ${targetFrameIndex}`))
+            return
+          }
+        } else if (now - lastDrawnAt >= frameDurationMs) {
+          stallStartedAt = null
           if (!emitDrawnSequenceFrame(targetFrameIndex, sequence)) {
             reject(new Error(`Sequence frame failed to draw: ${targetFrameIndex}`))
             return
           }
           lastDrawnFrameIndex = targetFrameIndex
+          lastDrawnAt = now
           trimSequenceWindow(targetFrameIndex, direction)
-        }
-
-        // Geometry follows the monotonic playback clock on every paint. Bitmap
-        // decoding may skip scheduled frames, but the surrounding UI must not
-        // stall and then sprint to its endpoint when a decode finishes late.
-        emitSequenceClock(targetFrameIndex, lastDrawnFrameIndex, clockProgress, sequence)
-
-        if (targetFrameIndex === end && sequenceBitmaps.has(end)) {
-          resolve()
-          return
-        }
-        if (elapsed >= totalDurationMs) {
-          reject(new Error(`Sequence endpoint frame was not ready: ${end}`))
-          return
+          const drawnProgress = forward
+            ? (lastDrawnFrameIndex - start) / Math.max(end - start, 1)
+            : (start - lastDrawnFrameIndex) / Math.max(start - end, 1)
+          // Geometry and the surrounding UI follow the actually drawn frame, so
+          // they can never sprint ahead of the visible picture or stall
+          // behind it while a late decode finishes.
+          emitSequenceClock(targetFrameIndex, lastDrawnFrameIndex, drawnProgress, sequence)
+          if (lastDrawnFrameIndex === end) {
+            resolve()
+            return
+          }
         }
         sequenceRafId = requestAnimationFrame(tick)
       }
@@ -655,16 +662,22 @@ watch(
       setCanvasVisibility(false)
       return
     }
-    if (
-      !sequencePlaying.value
-      && endpointOrientation.value === props.orientation
-      && runtime?.getDiagnostics?.().state === 'dynamic'
-    ) {
+    if (!sequencePlaying.value && runtime?.getDiagnostics?.().state === 'dynamic') {
+      // Re-anchoring: a previous forward handoff can leave endpointOrientation
+      // at 'profile'. The landing surface must always re-anchor to its own
+      // orientation instead of staying a blank plate.
+      if (endpointOrientation.value !== props.orientation) {
+        endpointOrientation.value = props.orientation
+      }
       rendererState.value = 'dynamic'
       runtime.resumeRendering?.()
       setCanvasVisibility(true)
       setEndpointVisibility(false)
+      return
     }
+    // Runtime not ready (or static tier): keep the endpoint still visible so
+    // the landing head is never left as a blank plate.
+    if (!sequencePlaying.value) setEndpointVisibility(true)
   },
 )
 

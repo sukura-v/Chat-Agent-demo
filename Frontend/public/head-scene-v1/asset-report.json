@@ -11,7 +11,7 @@
     "width": 1280,
     "height": 720,
     "codec": "webp",
-    "frameDurationSeconds": 0.007
+    "frameDurationSeconds": 0.041
   },
   "assets": {
     "runtime/maps/front_mask.png": {
