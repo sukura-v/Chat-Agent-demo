@@ -1,0 +1,55 @@
+{
+  "$schema": "https://oral-rehab.ai/schemas/assessment_config_v2.json",
+  "schema_version": "2.0",
+  "skill_id": "lip_pucker_01",
+  "clinical_protocol_reference": "OMES/OMES-E",
+  "runtime_perception_engine": "MediaPipe Face Landmarker",
+  "assessment_mode": "OMES-domain visual training proxy",
+  "clinical_validity": "not_diagnostic_not_gold_standard",
+  "dimensions": [
+    {
+      "dimension_ref": "lip_rounding_puckering_visual_proxy",
+      "omes_domain": "mobility",
+      "movement_dimension": "lip_rounding_puckering",
+      "observability": "visual_proxy",
+      "source_features": ["blendshape.mouthPucker", "blendshape.mouthFunnel", "metric.lip_rounding_puckering_ratio", "metric.lip_protrusion_ratio"],
+      "score_model": { "type": "higher_is_better", "min": 0, "target": 0.7 },
+      "aggregation_ref": { "method": "p95" },
+      "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true, "require_blendshapes": true },
+      "weight": 1,
+      "include_in_overall": true,
+      "confidence": "moderate",
+      "measurement_boundary": "Frontal RGB visual proxy for lip rounding/puckering; not true depth protrusion and not a formal OMES score."
+    },
+    {
+      "dimension_ref": "lip_width_narrowing_visual_proxy",
+      "omes_domain": "mobility",
+      "movement_dimension": "lip_width_narrowing",
+      "observability": "visual_proxy",
+      "source_features": ["metric.mouth_width_ratio"],
+      "score_model": { "type": "lower_is_better", "target": 0.35, "max": 0.65 },
+      "aggregation_ref": { "method": "median" },
+      "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+      "weight": 0.8,
+      "include_in_overall": true,
+      "confidence": "high",
+      "measurement_boundary": "Measures visible mouth-width narrowing only; not deep facial muscle activity."
+    },
+    {
+      "dimension_ref": "jaw_stability_visual_proxy",
+      "omes_domain": "mobility",
+      "movement_dimension": "jaw_stability",
+      "observability": "visual_proxy",
+      "source_features": ["metric.jaw_vertical_variance"],
+      "score_model": { "type": "lower_is_better", "target": 0.006, "max": 0.02 },
+      "aggregation_ref": { "method": "median" },
+      "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+      "weight": 0.4,
+      "include_in_overall": true,
+      "confidence": "high",
+      "measurement_boundary": "Surface landmark jaw-stability proxy; not internal TMJ kinematics."
+    }
+  ],
+  "unsupported_domains": ["muscle_tone", "orbicularis_oris_strength", "lip_endurance", "true_lip_protrusion_depth"],
+  "disclaimer": "MediaPipe output is a visual training proxy, not a formal OMES clinical score."
+}

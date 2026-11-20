@@ -1,0 +1,67 @@
+{
+  "$schema": "https://oral-rehab.ai/schemas/training_skill_registry_v1.json",
+  "registry_version": "1.0.0",
+  "generated_at": "2026-07-20T00:00:00+08:00",
+  "skills": [
+    {
+      "skill_id": "tongue_click_01",
+      "release_version": "1.2.0",
+      "status": "published",
+      "content_sha256": "d97613a94150339b14b7c8eee46f1deac2e7a011bb5adb9a17d8c75820ee358b",
+      "display_name": "弹舌训练",
+      "description": "摄像头与麦克风联合观测、Random Forest 参与决策的受限试运行。",
+      "icon": "👅",
+      "category": "tongue",
+      "self_service_allowed": true,
+      "estimated_duration_seconds": 30,
+      "minimum_client_capabilities": ["camera", "microphone"],
+      "minimum_age": 4,
+      "aliases": ["弹舌训练", "弹舌", "舌弹响"]
+    },
+    {
+      "skill_id": "tongue_click_01",
+      "release_version": "1.1.0",
+      "status": "published",
+      "content_sha256": "afcb8c1034b66298323d80070d1171d23e90af157f418fa471055094a26a0ea2",
+      "display_name": "弹舌训练",
+      "description": "可见动作与弹舌声学代理联合反馈。",
+      "icon": "👅",
+      "category": "tongue",
+      "self_service_allowed": true,
+      "estimated_duration_seconds": 30,
+      "minimum_client_capabilities": ["camera"],
+      "minimum_age": 4,
+      "aliases": ["弹舌训练", "弹舌", "舌弹响"]
+    },
+    {
+      "skill_id": "cheek_puff_01",
+      "release_version": "1.0.0",
+      "status": "published",
+      "content_sha256": "2af69f62c4c786ce7619f970e9ffe4d05838346d4355fab05440a46123339d0e",
+      "display_name": "鼓腮训练",
+      "description": "鼓腮外观、闭唇与下颌稳定视觉反馈。",
+      "icon": "🐡",
+      "category": "cheek",
+      "self_service_allowed": true,
+      "estimated_duration_seconds": 25,
+      "minimum_client_capabilities": ["camera"],
+      "minimum_age": 4,
+      "aliases": ["鼓腮训练", "鼓腮", "吹气"]
+    },
+    {
+      "skill_id": "lip_pucker_01",
+      "release_version": "1.0.0",
+      "status": "published",
+      "content_sha256": "3a9a6b64ec43679f8949edb17ace299f7dcfcb33741727ad5782347e6bb38db1",
+      "display_name": "噘嘴训练",
+      "description": "圆唇、口宽收窄与下颌稳定视觉反馈。",
+      "icon": "💋",
+      "category": "lip",
+      "self_service_allowed": true,
+      "estimated_duration_seconds": 25,
+      "minimum_client_capabilities": ["camera"],
+      "minimum_age": 4,
+      "aliases": ["噘嘴训练", "噘嘴", "抿唇训练", "圆唇"]
+    }
+  ]
+}

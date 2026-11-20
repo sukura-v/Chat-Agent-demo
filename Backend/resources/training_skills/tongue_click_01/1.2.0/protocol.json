@@ -1,0 +1,98 @@
+{
+  "exercise_id": "tongue_click_01",
+  "display_name": "弹舌训练",
+  "icon": "👅",
+  "description": "基于 MediaPipe、麦克风与冻结浅层 Random Forest 的弹舌准备、代偿、声音有效性和节律训练反馈。",
+  "$schema": "https://oral-rehab.ai/schemas/training_protocol_v2.json",
+  "schema_version": "2.1",
+  "calibration_policy": {
+    "target_valid_frames": 30,
+    "max_observed_frames": 600,
+    "min_valid_ratio": 0.45,
+    "min_face_width_ratio": 0.05,
+    "max_face_width_ratio": 0.95,
+    "max_normalized_jaw_std": 0.09,
+    "min_head_pose_stable_ratio": 0.4,
+    "max_retries": 5
+  },
+  "calibration_guidance": {
+    "warmup_ms": 150,
+    "max_alignment_ms": 45000,
+    "ready_hold_ms": 120,
+    "capture_break_grace_ms": 1500,
+    "preferred_interocular_ratio": [0.10, 0.48],
+    "preferred_face_center": [0.5, 0.44],
+    "max_center_offset": [0.30, 0.32],
+    "voice_prompt_cooldown_ms": 3500
+  },
+  "execution_tracking_policy": {
+    "soft_scale_ratio": [0.55, 1.60],
+    "hard_scale_ratio": [0.40, 1.90],
+    "soft_center_offset": [0.26, 0.28],
+    "hard_center_offset": [0.30, 0.32],
+    "warning_hold_ms": 250,
+    "block_grace_ms": 400,
+    "continuity_reset_after_ms": 400,
+    "reacquire_hold_ms": 500,
+    "max_blocked_ms": 5000,
+    "wall_timeout_multiplier": 2
+  },
+  "total_steps": 3,
+  "jaw_compensation_threshold": 0.012,
+  "steps": [
+    {
+      "step_index": 0,
+      "step_id": "mouth_opening_ready",
+      "step_role": "readiness_gate",
+      "completion_mode": "scored",
+      "title": "张口准备",
+      "instruction_text": "轻轻张开嘴，保持头部正对镜头。",
+      "instruction_audio": "轻轻张开嘴，保持头部正对镜头。",
+      "validation_rules": [
+        { "dimension_ref": "mouth_opening_visual_proxy", "dimension_score_threshold": 45, "weight": 0.6, "penalty_role": "objective", "failure_hint": "嘴巴再自然张开一点。" },
+        { "dimension_ref": "jaw_stability_visual_proxy", "dimension_score_threshold": 55, "weight": 0.4, "penalty_role": "penalty", "failure_hint": "下颌保持稳定。" }
+      ],
+      "pass_criteria": { "min_score": 65, "sustain_ms": 800 },
+      "attempt_policy": { "timeout_ms": 6000, "max_attempts": 3 },
+      "duration_hint_seconds": 4
+    },
+    {
+      "step_index": 1,
+      "step_id": "tongue_click_posture_ready",
+      "step_role": "readiness_gate",
+      "completion_mode": "scored",
+      "title": "弹舌姿势",
+      "instruction_text": "准备做弹舌动作，嘴巴保持张开，下颌尽量不跟着动。",
+      "instruction_audio": "准备做弹舌动作，嘴巴保持张开，下颌尽量不跟着动。",
+      "validation_rules": [
+        { "dimension_ref": "lip_lateral_control_visual_proxy", "dimension_score_threshold": 70, "weight": 0.4, "penalty_role": "objective", "failure_hint": "口部姿势保持自然，不要过度抿嘴。" },
+        { "dimension_ref": "jaw_stability_visual_proxy", "dimension_score_threshold": 55, "weight": 0.6, "penalty_role": "penalty", "failure_hint": "尽量让舌头做动作，不要让下巴抢着帮忙。" }
+      ],
+      "pass_criteria": { "min_score": 65, "sustain_ms": 1000 },
+      "attempt_policy": { "timeout_ms": 8000, "max_attempts": 3 },
+      "duration_hint_seconds": 6
+    },
+    {
+      "step_index": 2,
+      "step_id": "tongue_click_performance",
+      "step_role": "performance_window",
+      "completion_mode": "scored",
+      "performance_policy": { "min_valid_observation_ms": 5000, "min_audio_observation_ms": 4000 },
+      "title": "连续弹舌",
+      "instruction_text": "连续做弹舌动作，保持下颌稳定并尽量维持均匀节律。",
+      "instruction_audio": "连续做弹舌动作，保持下颌稳定并尽量维持均匀节律。",
+      "validation_rules": [
+        { "dimension_ref": "jaw_stability_visual_proxy", "dimension_score_threshold": 50, "weight": 0.25, "penalty_role": "objective", "failure_hint": "弹舌时下颌尽量稳定。" },
+        { "dimension_ref": "lip_lateral_control_visual_proxy", "dimension_score_threshold": 50, "weight": 0.15, "penalty_role": "objective", "failure_hint": "头部和嘴角保持自然。" },
+        { "dimension_ref": "tongue_click_validity_acoustic_proxy", "dimension_score_threshold": 50, "weight": 0.25, "penalty_role": "objective", "failure_hint": "让每次弹舌声更清楚。" },
+        { "dimension_ref": "tongue_click_acoustic_rhythm", "dimension_score_threshold": 50, "weight": 0.25, "penalty_role": "objective", "failure_hint": "尽量保持均匀节奏。" },
+        { "dimension_ref": "tongue_click_endurance_acoustic_proxy", "dimension_score_threshold": 50, "weight": 0.1, "penalty_role": "objective", "failure_hint": "继续保持连续练习。" }
+      ],
+      "pass_criteria": { "min_score": 60, "sustain_ms": 500 },
+      "attempt_policy": { "timeout_ms": 12000, "max_attempts": 2 },
+      "duration_hint_seconds": 7
+    }
+  ],
+  "completion_message": "弹舌训练完成。本结果综合了冻结浅层模型的可见动作和弹舌声学代理，不判断舌尖接触位置或舌肌力量。",
+  "completion_report_fields": ["steps_completed", "avg_score", "duration_seconds"]
+}

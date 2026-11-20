@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 132" role="img" aria-label="OralCare AI">
+  <rect width="240" height="132" rx="18" fill="#272B28" />
+  <g fill="none" stroke="#C8F43D" stroke-linecap="square" stroke-linejoin="round">
+    <path stroke-width="7" d="M28 66C48 26 86 14 120 14s72 12 92 52c-20 40-58 52-92 52S48 106 28 66Z" />
+    <path stroke-width="7" d="M62 78c25-27 69-35 112-12-22 2-42 12-57 29-20-9-38-14-55-17Z" />
+    <path stroke-width="13" d="M194 94c10-8 17-17 22-28" />
+    <path stroke-width="4" d="M120 5v16M53 30l11 12M187 30l-11 12M120 111v16" />
+  </g>
+</svg>

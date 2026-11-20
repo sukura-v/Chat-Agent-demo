@@ -1,0 +1,39 @@
+{
+  "schema_version": "1",
+  "guidance_kind": "CLINICAL_ACTION_GUIDANCE",
+  "title": "弹舌训练基本步骤",
+  "source_sections": [
+    "弹舌：初始定位阶段标准",
+    "弹舌：动态吸附阶段标准",
+    "弹舌：等长保持（Suction Hold）标准",
+    "弹舌：瞬间弹拨释放（The Snap / Click Release）标准",
+    "弹舌：微笑纠正法与实时监控标准"
+  ],
+  "steps": [
+    {
+      "step_index": 0,
+      "title": "找到舌尖定位点",
+      "instruction_text": "舌尖轻放在上切牙后方的牙槽嵴区域，不要向前顶牙。"
+    },
+    {
+      "step_index": 1,
+      "title": "让舌面吸附上腭",
+      "instruction_text": "舌尖保持定位，抬起舌前部和舌背，使舌面与上腭形成稳定贴合。"
+    },
+    {
+      "step_index": 2,
+      "title": "短暂保持吸附",
+      "instruction_text": "先稳定保持约 2 秒；动作熟练后再逐步延长，期间保持鼻呼吸。"
+    },
+    {
+      "step_index": 3,
+      "title": "快速向下释放",
+      "instruction_text": "保持头部和下巴稳定，让舌体快速垂直离开上腭，形成清晰弹响。"
+    },
+    {
+      "step_index": 4,
+      "title": "检查并减少代偿",
+      "instruction_text": "对镜观察，避免用下巴摆动、咬合或嘴唇用力来代替舌部动作。"
+    }
+  ]
+}

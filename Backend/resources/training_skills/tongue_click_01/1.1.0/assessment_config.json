@@ -1,0 +1,116 @@
+{
+  "$schema": "https://oral-rehab.ai/schemas/assessment_config_v2.json",
+  "schema_version": "2.1",
+  "skill_id": "tongue_click_01",
+  "clinical_protocol_reference": "OMES/OMES-E",
+  "runtime_perception_engine": "MediaPipe Face Landmarker + Web Audio",
+  "assessment_mode": "OMES-domain multimodal training proxy",
+  "clinical_validity": "not_diagnostic_not_gold_standard",
+  "feature_schema_version": "tongue-click-features@1",
+  "scoring_model_version": "deterministic-fusion@1",
+  "scoring_model_hash": "builtin:tongue-click-deterministic-fusion@1",
+  "dimensions": [
+    {
+      "dimension_ref": "jaw_stability_visual_proxy",
+      "omes_domain": "mobility",
+      "movement_dimension": "jaw_independence_and_stability",
+      "observability": "visual_proxy",
+      "source_features": [{ "feature_ref": "metric.jaw_vertical_variance", "weight": 1, "required": true, "normalizer": { "type": "lower_is_better", "target": 0.006, "worst": 0.02 } }],
+      "aggregation_ref": { "method": "median" },
+      "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+      "target_score": 70,
+      "weight": 0.25,
+      "include_in_overall": true,
+      "confidence": "high",
+      "measurement_boundary": "Surface landmark jaw-stability proxy during tongue-click practice; not tongue independence or strength."
+    },
+    {
+      "dimension_ref": "mouth_opening_visual_proxy",
+      "omes_domain": "mobility",
+      "movement_dimension": "mouth_opening_readiness",
+      "observability": "visual_proxy",
+      "source_features": [
+        { "feature_ref": "metric.mouth_openness_ratio", "weight": 0.7, "required": true, "normalizer": { "type": "higher_is_better", "min": 0, "target": 0.18 } },
+        { "feature_ref": "blendshape.jawOpen", "weight": 0.3, "required": false, "normalizer": { "type": "higher_is_better", "min": 0, "target": 0.7 } }
+      ],
+      "aggregation_ref": { "method": "median" },
+      "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+      "target_score": 60,
+      "weight": 0,
+      "include_in_overall": false,
+      "confidence": "high",
+      "measurement_boundary": "Visible mouth-opening readiness proxy only; not true oral aperture or swallowing safety."
+    },
+    {
+      "dimension_ref": "lip_lateral_control_visual_proxy",
+      "omes_domain": "mobility",
+      "movement_dimension": "head_and_lip_compensation_control",
+      "observability": "visual_proxy",
+      "source_features": [
+        { "feature_ref": "metric.mouth_width_ratio", "weight": 0.7, "required": true, "normalizer": { "type": "target_range", "min": 0.2, "min_target": 0.35, "max_target": 0.55, "max": 0.75 } },
+        { "feature_ref": "quality.head_pose_stable", "weight": 0.3, "required": true, "normalizer": { "type": "higher_is_better", "min": 0, "target": 1 } }
+      ],
+      "aggregation_ref": { "method": "median" },
+      "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+      "target_score": 70,
+      "weight": 0.15,
+      "include_in_overall": true,
+      "confidence": "moderate",
+      "measurement_boundary": "Visible mouth-corner and head-pose compensation proxy only; not intra-oral tongue contact."
+    },
+    {
+      "dimension_ref": "tongue_click_validity_acoustic_proxy",
+      "omes_domain": "functions",
+      "movement_dimension": "audible_tongue_click_validity",
+      "observability": "audio_proxy",
+      "source_features": [{ "feature_ref": "audio.valid_click_ratio", "weight": 1, "required": true, "normalizer": { "type": "higher_is_better", "min": 0.2, "target": 0.8 } }],
+      "aggregation_ref": { "method": "mean" },
+      "quality_requirements": { "min_audio_coverage_ratio": 0.75, "min_snr_db": 6, "min_click_count": 3 },
+      "target_score": 65,
+      "weight": 0.25,
+      "include_in_overall": true,
+      "confidence": "moderate",
+      "measurement_boundary": "Audible transient proxy for a tongue click; it does not prove tongue-tip contact location or tongue strength."
+    },
+    {
+      "dimension_ref": "tongue_click_acoustic_rhythm",
+      "omes_domain": "functions",
+      "movement_dimension": "tongue_click_rhythm_consistency",
+      "observability": "audio_proxy",
+      "source_features": [{ "feature_ref": "audio.inter_click_interval_cv", "weight": 1, "required": true, "normalizer": { "type": "lower_is_better", "target": 0.15, "worst": 0.6 } }],
+      "aggregation_ref": { "method": "mean" },
+      "quality_requirements": { "min_audio_coverage_ratio": 0.75, "min_snr_db": 6, "min_click_count": 3 },
+      "target_score": 65,
+      "weight": 0.25,
+      "include_in_overall": true,
+      "confidence": "moderate",
+      "measurement_boundary": "Acoustic interval-consistency proxy; not a formal OMES function score."
+    },
+    {
+      "dimension_ref": "tongue_click_endurance_acoustic_proxy",
+      "omes_domain": "functions",
+      "movement_dimension": "tongue_click_continuous_completion",
+      "observability": "audio_proxy",
+      "source_features": [{ "feature_ref": "audio.acoustic_coverage_ratio", "weight": 1, "required": true, "normalizer": { "type": "higher_is_better", "min": 0.5, "target": 0.9 } }],
+      "aggregation_ref": { "method": "mean" },
+      "quality_requirements": { "min_audio_coverage_ratio": 0.75, "min_snr_db": 6, "min_click_count": 3 },
+      "target_score": 70,
+      "weight": 0.1,
+      "include_in_overall": true,
+      "confidence": "moderate",
+      "measurement_boundary": "Continuous audible-practice coverage proxy only; not physiological tongue endurance."
+    }
+  ],
+  "attempt_assessment": {
+    "required_dimensions": ["jaw_stability_visual_proxy", "lip_lateral_control_visual_proxy", "tongue_click_validity_acoustic_proxy", "tongue_click_acoustic_rhythm", "tongue_click_endurance_acoustic_proxy"],
+    "weights": {
+      "jaw_stability_visual_proxy": 0.25,
+      "lip_lateral_control_visual_proxy": 0.15,
+      "tongue_click_validity_acoustic_proxy": 0.25,
+      "tongue_click_acoustic_rhythm": 0.25,
+      "tongue_click_endurance_acoustic_proxy": 0.1
+    }
+  },
+  "unsupported_domains": ["muscle_tone", "tongue_strength", "palatal_elevation", "velopharyngeal_closure", "tongue_tip_contact", "swallowing_safety"],
+  "disclaimer": "MediaPipe and microphone output are OMES-domain multimodal training proxies, not a formal OMES/OMES-E clinical score or diagnosis."
+}

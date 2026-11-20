@@ -1,0 +1,23 @@
+{
+  "$schema": "https://oral-rehab.ai/schemas/training_skill_release_v1.json",
+  "skill_id": "tongue_click_01",
+  "release_version": "1.2.0",
+  "status": "published",
+  "display_name": "弹舌训练",
+  "icon": "👅",
+  "category": "tongue",
+  "description": "结合可见动作与弹舌声学代理的 Random Forest 受约束实时试运行；不测量舌肌力量或舌尖接触位置。",
+  "self_service_allowed": true,
+  "adaptive_enabled": true,
+  "requires_audio": true,
+  "partial_mode_allowed": true,
+  "minimum_client_capabilities": ["camera", "microphone"],
+  "aliases": ["弹舌训练", "弹舌", "舌弹响"],
+  "evidence": {
+    "source_ids": ["OMES-E", "runtime-proxy-contract-v2.2", "tongue-click-rf@0.1.0"],
+    "evidence_version": "2026-08",
+    "reviewer": "clinical-review-required",
+    "reviewed_at": "2026-07-20"
+  },
+  "measurement_boundary": "RGB landmarks and microphone events are training proxies only; they do not measure tongue strength, intra-oral contact, swallowing safety, or produce a formal OMES score."
+}

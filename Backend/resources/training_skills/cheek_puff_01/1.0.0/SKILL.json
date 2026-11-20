@@ -1,0 +1,23 @@
+{
+  "$schema": "https://oral-rehab.ai/schemas/training_skill_release_v1.json",
+  "skill_id": "cheek_puff_01",
+  "release_version": "1.0.0",
+  "status": "published",
+  "display_name": "鼓腮训练",
+  "icon": "🐡",
+  "category": "cheek",
+  "description": "观察鼓腮外观、闭唇保持与下颌稳定的实时视觉训练。",
+  "self_service_allowed": true,
+  "adaptive_enabled": true,
+  "requires_audio": false,
+  "partial_mode_allowed": false,
+  "minimum_client_capabilities": ["camera"],
+  "aliases": ["鼓腮训练", "鼓腮", "吹气"],
+  "evidence": {
+    "source_ids": ["OMES-E", "runtime-proxy-contract-v2.0"],
+    "evidence_version": "2026-07",
+    "reviewer": "clinical-review-required",
+    "reviewed_at": "2026-07-20"
+  },
+  "measurement_boundary": "RGB landmarks provide surface visual proxies only; they do not measure intra-oral pressure or physiological cheek strength."
+}

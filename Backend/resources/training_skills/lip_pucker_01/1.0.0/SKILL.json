@@ -1,0 +1,23 @@
+{
+  "$schema": "https://oral-rehab.ai/schemas/training_skill_release_v1.json",
+  "skill_id": "lip_pucker_01",
+  "release_version": "1.0.0",
+  "status": "published",
+  "display_name": "噘嘴训练",
+  "icon": "💋",
+  "category": "lip",
+  "description": "观察圆唇、口宽收窄与下颌稳定的实时视觉训练。",
+  "self_service_allowed": true,
+  "adaptive_enabled": true,
+  "requires_audio": false,
+  "partial_mode_allowed": false,
+  "minimum_client_capabilities": ["camera"],
+  "aliases": ["噘嘴训练", "噘嘴", "抿唇训练", "圆唇"],
+  "evidence": {
+    "source_ids": ["OMES-E", "runtime-proxy-contract-v2.0"],
+    "evidence_version": "2026-07",
+    "reviewer": "clinical-review-required",
+    "reviewed_at": "2026-07-20"
+  },
+  "measurement_boundary": "RGB landmarks provide visible movement proxies only and do not produce a formal OMES score."
+}

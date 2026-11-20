@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# local env & runtime data (never commit real keys)
+Backend/.env
+Backend/data/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# editor / OS
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

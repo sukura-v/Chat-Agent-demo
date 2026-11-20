@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" role="img" aria-label="OralCare AI abstract oral motion field">
+  <defs>
+    <filter id="soft-focus" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="24" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1200" fill="#74726C" />
+  <g fill="none" stroke="#F4F6F0" stroke-linecap="square" opacity=".18" filter="url(#soft-focus)">
+    <path stroke-width="54" d="M-120 602C162 52 650-84 984-30s718 256 886 706c-282 550-770 686-1104 632S48 1052-120 602Z" />
+    <path stroke-width="48" d="M274 760c286-314 770-382 1204-94-258 16-482 130-650 326-214-116-396-190-554-232Z" />
+    <path stroke-width="38" d="M490 492C682 172 1046 100 1348 250c-192 34-356 128-468 284-150-58-282-72-390-42Z" />
+  </g>
+</svg>

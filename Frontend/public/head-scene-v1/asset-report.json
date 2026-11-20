@@ -1,0 +1,101 @@
+{
+  "schema": "oral-rehab/head-scene-runtime-asset-report",
+  "schemaVersion": 1,
+  "assetVersion": "head-scene-v1-maps-2026-07-26",
+  "sequence": {
+    "directory": "runtime/sequence",
+    "pattern": "frame_{index:03d}_delay-0.041s.webp",
+    "frameCount": 236,
+    "firstFrameIndex": 1,
+    "lastFrameIndex": 236,
+    "width": 1280,
+    "height": 720,
+    "codec": "webp",
+    "frameDurationSeconds": 0.007
+  },
+  "assets": {
+    "runtime/maps/front_mask.png": {
+      "sha256": "F59AEA82D5135738019D3263FBEEAFCDDFAC8F855EA3855E413C2C3235D80304",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 8,
+      "channels": "gray",
+      "semantics": "mask-weight"
+    },
+    "runtime/maps/profile_mask.png": {
+      "sha256": "C2FF91EE67AECED00B2B94DFE2D40BB7719320DEB683E5467D849E2D40AE319D",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 8,
+      "channels": "gray",
+      "semantics": "mask-weight"
+    },
+    "runtime/maps/front_depth.png": {
+      "sha256": "AE1C2E5A0C8CFC999DE4CA4AF9DEF7115F53A2DA04703720ED0C728C9EAF6EAC",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 16,
+      "channels": "gray",
+      "near": 0,
+      "far": 65535,
+      "background": 65535,
+      "polarity": "black-near-white-far"
+    },
+    "runtime/maps/profile_depth.png": {
+      "sha256": "CC0F1898FCA3EFDEC37EF4D03D0078A0D90F765AC7E9198781E8C3109D7E9844",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 16,
+      "channels": "gray",
+      "near": 0,
+      "far": 65535,
+      "background": 65535,
+      "polarity": "black-near-white-far"
+    },
+    "runtime/maps/front_mask.webp": {
+      "sha256": "656297D12B832D9356D561CE5B349DE883245B9FE527BE6BBBEE3DFA78CEE16D",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 8,
+      "codec": "webp-lossless",
+      "semantics": "mask-weight"
+    },
+    "runtime/maps/profile_mask.webp": {
+      "sha256": "DD2068DF23EA4B12536530C7695FB37FE77766E7AF2F3DCB878D3C99973DEE5F",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 8,
+      "codec": "webp-lossless",
+      "semantics": "mask-weight"
+    },
+    "runtime/maps/front_depth.webp": {
+      "sha256": "086D1A6CED140C69EC07065CB04711D4BDC6D05D270686EC67FE6397F63588DF",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 8,
+      "codec": "webp-lossless",
+      "near": 0,
+      "far": 255,
+      "background": 255,
+      "polarity": "black-near-white-far"
+    },
+    "runtime/maps/profile_depth.webp": {
+      "sha256": "C7D5E6E60B615BACC0A0AE5E6F3DA96AFCFEB28B2A5DC880FCF2E45504FD545F",
+      "width": 1280,
+      "height": 720,
+      "bitDepth": 8,
+      "codec": "webp-lossless",
+      "near": 0,
+      "far": 255,
+      "background": 255,
+      "polarity": "black-near-white-far"
+    }
+  },
+  "checks": {
+    "sequenceFrameCount": 236,
+    "sequenceNumberingContinuous": true,
+    "endpointFramesAreSequenceMembers": true,
+    "depthDecoderPreservesUint16": true,
+    "mediumMapsMatchDeterministicQuantization": true
+  }
+}

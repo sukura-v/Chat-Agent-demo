@@ -1,0 +1,35 @@
+{
+  "schema_version": "1",
+  "required_modalities": ["camera", "microphone"],
+  "decision_package_ref": {
+    "package_id": "tongue-click-rf@0.1.0",
+    "package_hash": "sha256:19789ecfc99e6d9fa5d58447922f7f94d45125448256f3260a9f5a4fbfa26be0"
+  },
+  "instruction_assessment_map": [
+    {"instruction_step_id": "clinical-step-1", "assessment_phase_ids": ["mouth_opening_ready"]},
+    {"instruction_step_id": "clinical-step-2", "assessment_phase_ids": ["tongue_click_posture_ready"]},
+    {"instruction_step_id": "clinical-step-3", "assessment_phase_ids": ["tongue_click_posture_ready"]},
+    {"instruction_step_id": "clinical-step-4", "assessment_phase_ids": ["tongue_click_performance"]},
+    {"instruction_step_id": "clinical-step-5", "assessment_phase_ids": ["tongue_click_performance"]}
+  ],
+  "action_completion_contract": {
+    "schema_version": "1",
+    "min_positive_events": 3,
+    "min_valid_observation_ms": 5000,
+    "max_compensation_coverage_ratio": 0.35,
+    "min_landmark_coverage_ratio": 0.6,
+    "min_audio_coverage_ratio": 0.6,
+    "negative_windows_before_retry": 2,
+    "max_retries": 1,
+    "max_windows_per_attempt": 18,
+    "max_session_windows": 36,
+    "max_wall_clock_ms": 30000,
+    "event_merge_tolerance_ms": 120
+  },
+  "feedback_policy": {
+    "schema_version": "1",
+    "max_neutral_retries": 1,
+    "feedback_cooldown_ms": 800,
+    "tts_events": ["step_start", "neutral_retry", "completed", "completed_partial"]
+  }
+}

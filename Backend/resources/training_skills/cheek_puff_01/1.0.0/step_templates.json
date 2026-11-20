@@ -1,0 +1,25 @@
+{
+  "templates": [
+    {
+      "step_template_id": "cheek_puff_warmup",
+      "position": "before_performance",
+      "step": {
+        "step_id": "cheek_puff_warmup",
+        "completion_mode": "scored",
+        "title": "轻轻含气",
+        "instruction_text": "先轻轻含住一小口气，嘴唇保持闭合。",
+        "instruction_audio": "先轻轻含住一小口气，嘴唇保持闭合。",
+        "validation_rules": [
+          {"dimension_ref": "lip_closure_visual_proxy", "metric": "lip_seal_score", "condition": ">", "threshold": 0.7, "weight": 1, "penalty_role": "objective", "failure_hint": "嘴唇轻轻闭合。"}
+        ],
+        "pass_criteria": {"min_score": 55, "sustain_ms": 600},
+        "attempt_policy": {"timeout_ms": 6000, "max_attempts": 2},
+        "duration_hint_seconds": 4
+      }
+    }
+  ],
+  "instruction_variants": {
+    "gentle": {"suffix": " 慢慢来，先轻轻保持住。"},
+    "concise": {"suffix": " 嘴唇闭合，下颌稳定。"}
+  }
+}

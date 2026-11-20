@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oral-rehab.ai/schemas/head-scene-manifest-v1.json",
+  "title": "Oral Rehab Head Scene Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schemaVersion",
+    "assetVersion",
+    "canvas",
+    "endpoints",
+    "dataMaps",
+    "transition",
+    "validation",
+    "resources"
+  ],
+  "properties": {
+    "schema": { "const": "oral-rehab/head-scene-manifest" },
+    "schemaVersion": { "const": 1 },
+    "assetVersion": { "type": "string", "minLength": 1 },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "coordinateSpace", "backgroundColor", "cropSafeArea"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "coordinateSpace": { "const": "top-left-pixels" },
+        "backgroundColor": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "cropSafeArea": { "$ref": "#/$defs/rectangle" }
+      }
+    },
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["front", "profile"],
+      "properties": {
+        "front": { "$ref": "#/$defs/endpoint" },
+        "profile": { "$ref": "#/$defs/endpoint" }
+      }
+    },
+    "dataMaps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["high", "medium"],
+      "properties": {
+        "high": { "$ref": "#/$defs/dataMapTier" },
+        "medium": { "$ref": "#/$defs/dataMapTier" }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sources", "segments"],
+      "properties": {
+        "sources": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["webm", "mp4"],
+          "properties": {
+            "webm": { "const": "video.transition.webm" },
+            "mp4": { "const": "video.transition.mp4" }
+          }
+        },
+        "segments": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enter", "hold", "return"],
+          "properties": {
+            "enter": {
+              "allOf": [
+                { "$ref": "#/$defs/timeSegment" },
+                { "properties": { "startSeconds": { "const": 0 }, "endSeconds": { "const": 4.5 } } }
+              ]
+            },
+            "hold": {
+              "allOf": [
+                { "$ref": "#/$defs/timeSegment" },
+                { "properties": { "startSeconds": { "const": 4.5 }, "endSeconds": { "const": 5 } } }
+              ]
+            },
+            "return": {
+              "allOf": [
+                { "$ref": "#/$defs/timeSegment" },
+                { "properties": { "startSeconds": { "const": 5 }, "endSeconds": { "const": 9.5 } } }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checksumAlgorithm", "endpointSsimMinimum", "anchorMaxDeviationPx"],
+      "properties": {
+        "checksumAlgorithm": { "const": "sha256" },
+        "endpointSsimMinimum": { "type": "number", "minimum": 0.985, "maximum": 1 },
+        "anchorMaxDeviationPx": { "type": "number", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "master.transition",
+        "master.front",
+        "master.profile",
+        "video.transition.webm",
+        "video.transition.mp4",
+        "endpoint.front",
+        "endpoint.profile",
+        "data.high.frontMask",
+        "data.high.profileMask",
+        "data.high.frontDepth",
+        "data.high.profileDepth",
+        "data.medium.frontMask",
+        "data.medium.profileMask",
+        "data.medium.frontDepth",
+        "data.medium.profileDepth"
+      ],
+      "properties": {
+        "master.transition": { "$ref": "#/$defs/resource" },
+        "master.front": { "$ref": "#/$defs/resource" },
+        "master.profile": { "$ref": "#/$defs/resource" },
+        "video.transition.webm": { "$ref": "#/$defs/resource" },
+        "video.transition.mp4": { "$ref": "#/$defs/resource" },
+        "endpoint.front": { "$ref": "#/$defs/resource" },
+        "endpoint.profile": { "$ref": "#/$defs/resource" },
+        "data.high.frontMask": { "$ref": "#/$defs/resource" },
+        "data.high.profileMask": { "$ref": "#/$defs/resource" },
+        "data.high.frontDepth": { "$ref": "#/$defs/resource" },
+        "data.high.profileDepth": { "$ref": "#/$defs/resource" },
+        "data.medium.frontMask": { "$ref": "#/$defs/resource" },
+        "data.medium.profileMask": { "$ref": "#/$defs/resource" },
+        "data.medium.frontDepth": { "$ref": "#/$defs/resource" },
+        "data.medium.profileDepth": { "$ref": "#/$defs/resource" }
+      }
+    }
+  },
+  "$defs": {
+    "rectangle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0 },
+        "y": { "type": "number", "minimum": 0 },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "anchor": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "anchors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["leftEyeOuter", "rightEyeOuter", "noseTip", "leftMouthCorner", "rightMouthCorner", "chin"],
+      "properties": {
+        "leftEyeOuter": { "$ref": "#/$defs/anchor" },
+        "rightEyeOuter": { "$ref": "#/$defs/anchor" },
+        "noseTip": { "$ref": "#/$defs/anchor" },
+        "leftMouthCorner": { "$ref": "#/$defs/anchor" },
+        "rightMouthCorner": { "$ref": "#/$defs/anchor" },
+        "chin": { "$ref": "#/$defs/anchor" }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetId", "sourceTimeSeconds", "anchors"],
+      "properties": {
+        "assetId": { "type": "string", "minLength": 1 },
+        "sourceTimeSeconds": { "type": "number", "minimum": 0 },
+        "anchors": { "$ref": "#/$defs/anchors" }
+      }
+    },
+    "dataMapTier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frontMask", "profileMask", "frontDepth", "profileDepth"],
+      "properties": {
+        "frontMask": { "type": "string", "minLength": 1 },
+        "profileMask": { "type": "string", "minLength": 1 },
+        "frontDepth": { "type": "string", "minLength": 1 },
+        "profileDepth": { "type": "string", "minLength": 1 }
+      }
+    },
+    "timeSegment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startSeconds", "endSeconds"],
+      "properties": {
+        "startSeconds": { "type": "number", "minimum": 0 },
+        "endSeconds": { "type": "number", "minimum": 0 }
+      }
+    },
+    "checksum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "const": "sha256" },
+        "value": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" }
+      }
+    },
+    "media": {
+      "type": "object",
+      "required": ["width", "height", "colorSpace"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "frameRate": { "type": "number", "exclusiveMinimum": 0 },
+        "durationSeconds": { "type": "number", "exclusiveMinimum": 0 },
+        "codec": { "type": "string", "minLength": 1 },
+        "pixelFormat": { "type": "string", "minLength": 1 },
+        "bitDepth": { "type": "integer", "minimum": 1 },
+        "channels": { "type": "string", "minLength": 1 },
+        "alpha": { "enum": ["straight", "none"] },
+        "backgroundColor": { "type": "string" },
+        "fastStart": { "type": "boolean" },
+        "colorSpace": { "type": "string" }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "role", "media", "checksum"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "media": { "$ref": "#/$defs/media" },
+        "checksum": { "$ref": "#/$defs/checksum" }
+      }
+    }
+  }
+}

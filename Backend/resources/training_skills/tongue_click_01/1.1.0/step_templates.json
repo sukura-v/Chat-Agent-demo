@@ -1,0 +1,45 @@
+{
+  "templates": [
+    {
+      "step_template_id": "tongue_click_warmup",
+      "position": "before_performance",
+      "step": {
+        "step_id": "tongue_click_warmup",
+        "step_role": "readiness_gate",
+        "completion_mode": "scored",
+        "title": "轻声热身",
+        "instruction_text": "先慢慢做三次清晰弹舌，找到稳定节奏。",
+        "instruction_audio": "先慢慢做三次清晰弹舌，找到稳定节奏。",
+        "validation_rules": [
+          {"dimension_ref": "jaw_stability_visual_proxy", "dimension_score_threshold": 45, "weight": 0.4, "penalty_role": "objective", "failure_hint": "下颌尽量保持稳定。"},
+          {"dimension_ref": "tongue_click_validity_acoustic_proxy", "dimension_score_threshold": 45, "weight": 0.6, "penalty_role": "objective", "failure_hint": "让每次声音更清晰。"}
+        ],
+        "pass_criteria": {"min_score": 55, "sustain_ms": 500},
+        "attempt_policy": {"timeout_ms": 8000, "max_attempts": 2},
+        "duration_hint_seconds": 5
+      }
+    },
+    {
+      "step_template_id": "tongue_click_repeat",
+      "position": "after_performance",
+      "step": {
+        "step_id": "tongue_click_repeat",
+        "step_role": "performance_window",
+        "completion_mode": "scored",
+        "title": "再来一组",
+        "instruction_text": "保持刚才的节奏，再完成一组弹舌。",
+        "instruction_audio": "保持刚才的节奏，再完成一组弹舌。",
+        "validation_rules": [
+          {"dimension_ref": "tongue_click_acoustic_rhythm", "dimension_score_threshold": 50, "weight": 1, "penalty_role": "objective", "failure_hint": "保持均匀节奏。"}
+        ],
+        "pass_criteria": {"min_score": 55, "sustain_ms": 500},
+        "attempt_policy": {"timeout_ms": 10000, "max_attempts": 2},
+        "duration_hint_seconds": 6
+      }
+    }
+  ],
+  "instruction_variants": {
+    "gentle": {"suffix": " 慢慢来，先把每一次做清楚。"},
+    "concise": {"suffix": " 保持稳定节奏。"}
+  }
+}

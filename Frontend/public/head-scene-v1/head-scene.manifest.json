@@ -1,0 +1,83 @@
+{
+  "schema": "oral-rehab/head-scene-runtime-manifest",
+  "schemaVersion": 1,
+  "assetVersion": "head-scene-v1-maps-2026-07-26",
+  "canvas": {
+    "width": 1280,
+    "height": 720,
+    "coordinateSpace": "top-left-pixels",
+    "backgroundColor": "#F3F6F4",
+    "cropSafeArea": { "x": 0, "y": 0, "width": 1280, "height": 720 }
+  },
+  "endpoints": {
+    "front": {
+      "frameIndex": 1,
+      "anchors": {
+        "leftEyeOuter": [493, 343],
+        "rightEyeOuter": [787, 343],
+        "noseTip": [640, 452],
+        "leftMouthCorner": [565, 530],
+        "rightMouthCorner": [715, 530],
+        "chin": [640, 638]
+      }
+    },
+    "profile": {
+      "frameIndex": 236,
+      "anchors": {
+        "leftEyeOuter": [584, 329],
+        "rightEyeOuter": [640, 329],
+        "noseTip": [653, 393],
+        "leftMouthCorner": [604, 460],
+        "rightMouthCorner": [631, 461],
+        "chin": [606, 554]
+      }
+    }
+  },
+  "sequence": {
+    "directory": "runtime/sequence",
+    "pattern": "frame_{index:03d}_delay-0.041s.webp",
+    "firstFrameIndex": 1,
+    "lastFrameIndex": 236,
+    "frameCount": 236,
+    "frameDurationSeconds": 0.007
+  },
+  "maps": {
+    "high": {
+      "frontMask": "runtime/maps/front_mask.png",
+      "profileMask": "runtime/maps/profile_mask.png",
+      "frontDepth": "runtime/maps/front_depth.png",
+      "profileDepth": "runtime/maps/profile_depth.png"
+    },
+    "medium": {
+      "frontMask": "runtime/maps/front_mask.webp",
+      "profileMask": "runtime/maps/profile_mask.webp",
+      "frontDepth": "runtime/maps/front_depth.webp",
+      "profileDepth": "runtime/maps/profile_depth.webp"
+    }
+  },
+  "depth": {
+    "bitDepthHigh": 16,
+    "bitDepthMedium": 8,
+    "near": 0,
+    "far": 65535,
+    "background": 65535,
+    "polarity": "black-near-white-far"
+  },
+  "mask": {
+    "min": 0,
+    "max": 255,
+    "semantics": "weight",
+    "zero": "no-displacement",
+    "full": "full-displacement"
+  },
+  "checksums": {
+    "runtime/maps/front_mask.png": "F59AEA82D5135738019D3263FBEEAFCDDFAC8F855EA3855E413C2C3235D80304",
+    "runtime/maps/profile_mask.png": "C2FF91EE67AECED00B2B94DFE2D40BB7719320DEB683E5467D849E2D40AE319D",
+    "runtime/maps/front_depth.png": "AE1C2E5A0C8CFC999DE4CA4AF9DEF7115F53A2DA04703720ED0C728C9EAF6EAC",
+    "runtime/maps/profile_depth.png": "CC0F1898FCA3EFDEC37EF4D03D0078A0D90F765AC7E9198781E8C3109D7E9844",
+    "runtime/maps/front_mask.webp": "656297D12B832D9356D561CE5B349DE883245B9FE527BE6BBBEE3DFA78CEE16D",
+    "runtime/maps/profile_mask.webp": "DD2068DF23EA4B12536530C7695FB37FE77766E7AF2F3DCB878D3C99973DEE5F",
+    "runtime/maps/front_depth.webp": "086D1A6CED140C69EC07065CB04711D4BDC6D05D270686EC67FE6397F63588DF",
+    "runtime/maps/profile_depth.webp": "C7D5E6E60B615BACC0A0AE5E6F3DA96AFCFEB28B2A5DC880FCF2E45504FD545F"
+  }
+}

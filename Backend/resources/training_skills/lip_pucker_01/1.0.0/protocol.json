@@ -1,0 +1,163 @@
+{
+  "exercise_id": "lip_pucker_01",
+  "display_name": "噘嘴训练",
+  "icon": "💋",
+  "description": "基于 MediaPipe Face Landmarker 的实时圆唇/噘嘴视觉训练反馈。",
+  "$schema": "https://oral-rehab.ai/schemas/training_protocol_v2.json",
+  "schema_version": "2.0",
+  "calibration_policy": {
+    "target_valid_frames": 30,
+    "max_observed_frames": 600,
+    "min_valid_ratio": 0.45,
+    "min_face_width_ratio": 0.05,
+    "max_face_width_ratio": 0.95,
+    "max_normalized_jaw_std": 0.09,
+    "min_head_pose_stable_ratio": 0.4,
+    "max_retries": 5
+  },
+  "calibration_guidance": {
+    "warmup_ms": 150,
+    "max_alignment_ms": 45000,
+    "ready_hold_ms": 120,
+    "capture_break_grace_ms": 1500,
+    "preferred_interocular_ratio": [0.10, 0.48],
+    "preferred_face_center": [0.5, 0.44],
+    "max_center_offset": [0.30, 0.32],
+    "voice_prompt_cooldown_ms": 3500
+  },
+  "execution_tracking_policy": {
+    "soft_scale_ratio": [0.55, 1.60],
+    "hard_scale_ratio": [0.40, 1.90],
+    "soft_center_offset": [0.26, 0.28],
+    "hard_center_offset": [0.30, 0.32],
+    "warning_hold_ms": 250,
+    "block_grace_ms": 400,
+    "continuity_reset_after_ms": 400,
+    "reacquire_hold_ms": 500,
+    "max_blocked_ms": 5000,
+    "wall_timeout_multiplier": 2
+  },
+  "total_steps": 3,
+  "jaw_compensation_threshold": 0.01,
+  "steps": [
+    {
+      "step_index": 0,
+      "step_id": "relaxed_ready",
+      "completion_mode": "scored",
+      "title": "放松准备",
+      "instruction_text": "先自然放松面部，保持头部稳定。",
+      "instruction_audio": "先自然放松面部，保持头部稳定。",
+      "validation_rules": [
+        {
+          "dimension_ref": "jaw_stability_visual_proxy",
+          "source_features": ["metric.jaw_vertical_variance"],
+          "score_model": { "type": "lower_is_better", "target": 0.006, "max": 0.02 },
+          "aggregation_ref": { "method": "median" },
+          "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+          "metric": "jaw_vertical_variance",
+          "condition": "<",
+          "threshold": 0.009,
+          "weight": 0.5,
+          "penalty_role": "penalty",
+          "failure_hint": "保持下颌稳定，不要用下巴代替嘴唇发力。"
+        },
+        {
+          "dimension_ref": "lip_width_narrowing_visual_proxy",
+          "source_features": ["metric.mouth_width_ratio"],
+          "score_model": { "type": "lower_is_better", "target": 0.5, "max": 0.7 },
+          "aggregation_ref": { "method": "median" },
+          "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+          "metric": "mouth_width_ratio",
+          "condition": "<",
+          "threshold": 0.5,
+          "weight": 0.5,
+          "penalty_role": "objective",
+          "failure_hint": "嘴角先放松，不要横向咧开。"
+        }
+      ],
+      "pass_criteria": { "min_score": 60, "sustain_ms": 800 },
+      "attempt_policy": { "timeout_ms": 5000, "max_attempts": 3 },
+      "duration_hint_seconds": 3
+    },
+    {
+      "step_index": 1,
+      "step_id": "lip_pucker_form",
+      "completion_mode": "scored",
+      "title": "圆唇噘嘴",
+      "instruction_text": "双唇向中间收拢，做出圆唇噘嘴的样子。",
+      "instruction_audio": "双唇向中间收拢，做出圆唇噘嘴的样子。",
+      "validation_rules": [
+        {
+          "dimension_ref": "lip_rounding_puckering_visual_proxy",
+          "source_features": ["blendshape.mouthPucker", "blendshape.mouthFunnel", "metric.lip_rounding_puckering_ratio", "metric.lip_protrusion_ratio"],
+          "score_model": { "type": "higher_is_better", "min": 0, "target": 0.7 },
+          "aggregation_ref": { "method": "p95" },
+          "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true, "require_blendshapes": true },
+          "metric": "lip_rounding_puckering_ratio",
+          "condition": ">",
+          "threshold": 0.15,
+          "weight": 0.6,
+          "penalty_role": "objective",
+          "failure_hint": "嘴唇再圆一点，像轻轻吹口哨。"
+        },
+        {
+          "dimension_ref": "lip_width_narrowing_visual_proxy",
+          "source_features": ["metric.mouth_width_ratio"],
+          "score_model": { "type": "lower_is_better", "target": 0.35, "max": 0.65 },
+          "aggregation_ref": { "method": "median" },
+          "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+          "metric": "mouth_width_ratio",
+          "condition": "<",
+          "threshold": 0.38,
+          "weight": 0.4,
+          "penalty_role": "objective",
+          "failure_hint": "嘴角向中间收，不要横向展开。"
+        }
+      ],
+      "pass_criteria": { "min_score": 68, "sustain_ms": 1000 },
+      "attempt_policy": { "timeout_ms": 8000, "max_attempts": 3 },
+      "duration_hint_seconds": 6
+    },
+    {
+      "step_index": 2,
+      "step_id": "lip_pucker_hold",
+      "completion_mode": "scored",
+      "title": "保持圆唇",
+      "instruction_text": "保持圆唇噘嘴姿势 5 秒，头和下颌尽量稳定。",
+      "instruction_audio": "保持圆唇噘嘴姿势五秒，头和下颌尽量稳定。",
+      "validation_rules": [
+        {
+          "dimension_ref": "lip_rounding_puckering_visual_proxy",
+          "source_features": ["blendshape.mouthPucker", "blendshape.mouthFunnel", "metric.lip_rounding_puckering_ratio", "metric.lip_protrusion_ratio"],
+          "score_model": { "type": "higher_is_better", "min": 0, "target": 0.7 },
+          "aggregation_ref": { "method": "p95" },
+          "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true, "require_blendshapes": true },
+          "metric": "lip_rounding_puckering_ratio",
+          "condition": ">",
+          "threshold": 0.15,
+          "weight": 0.5,
+          "penalty_role": "objective",
+          "failure_hint": "继续保持圆唇，不要太快放松。"
+        },
+        {
+          "dimension_ref": "jaw_stability_visual_proxy",
+          "source_features": ["metric.jaw_vertical_variance"],
+          "score_model": { "type": "lower_is_better", "target": 0.006, "max": 0.02 },
+          "aggregation_ref": { "method": "median" },
+          "quality_requirements": { "min_coverage_ratio": 0.5, "min_fps": 15, "require_stable_head_pose": true },
+          "metric": "jaw_vertical_variance",
+          "condition": "<",
+          "threshold": 0.01,
+          "weight": 0.5,
+          "penalty_role": "penalty",
+          "failure_hint": "下颌保持稳定，让嘴唇自己完成动作。"
+        }
+      ],
+      "pass_criteria": { "min_score": 70, "sustain_ms": 5000 },
+      "attempt_policy": { "timeout_ms": 12000, "max_attempts": 3 },
+      "duration_hint_seconds": 7
+    }
+  ],
+  "completion_message": "噘嘴训练完成！这只是视觉训练反馈，不是正式 OMES 评分。",
+  "completion_report_fields": ["steps_completed", "avg_score", "duration_seconds"]
+}

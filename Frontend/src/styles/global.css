@@ -1,0 +1,822 @@
+@font-face {
+  font-family: "IBM Plex Sans SC";
+  src: url("/fonts/ibm-plex/IBMPlexSansSC-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans SC";
+  src: url("/fonts/ibm-plex/IBMPlexSansSC-Medium.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans SC";
+  src: url("/fonts/ibm-plex/IBMPlexSansSC-SemiBold.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/ibm-plex/IBMPlexMono-Medium.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/ibm-plex/IBMPlexMono-SemiBold.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+:root {
+  /* 高保真科研终端色彩与材质 Token (Clinical Futurism System) */
+  --page-bg: #F1F0F1;
+  --surface-main: rgba(245, 244, 245, 0.64);
+  --surface-light: rgba(250, 250, 250, 0.72);
+  --surface-inner: rgba(247, 247, 247, 0.76);
+  --surface-panel: rgba(245, 245, 245, 0.58);
+  --surface-panel-task: rgba(249, 249, 249, 0.64);
+
+  --text-primary: #1D2120;
+  --text-secondary: #5F6162;
+  --text-tertiary: #8E9091;
+
+  --line-primary: rgba(155, 158, 158, 0.46);
+  --line-secondary: rgba(190, 192, 192, 0.40);
+  --line-soft: rgba(208, 206, 206, 0.40);
+
+  --accent-orange: #DF6925;
+  --accent-orange-bright: #F06A1F;
+
+  --oc-mist-field: #74726C;
+  --oc-deep-graphite: #272B28;
+  --oc-optical-white: #F4F6F0;
+  --oc-signal-lime: #C8F43D;
+  --oc-warm-rule: #A9A79F;
+  --oc-alert-coral: #C65B48;
+  --oc-surface: #FFFFFF;
+  --oc-text-muted: #70766F;
+  --oc-rehab-green: #789B19;
+  --oc-rule-soft: #E5E8E2;
+
+  --font-display: "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Microsoft YaHei UI", sans-serif;
+  --font-family: "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Microsoft YaHei UI", sans-serif;
+  --font-utility: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", "SFMono-Regular", Consolas, monospace;
+  --font-data: var(--font-utility);
+  --font-mono: var(--font-utility);
+
+  --bg-page: #EEF1ED;
+  --bg-white: #FFFFFF;
+  --bg-warm: #E6EAE5;
+  --text-primary: var(--oc-deep-graphite);
+  --text-secondary: #505650;
+  --text-light: #70766F;
+  --border-color: #D5DAD4;
+  --primary: #789B19;
+  --primary-dark: var(--oc-deep-graphite);
+  --primary-light: #DFF89B;
+  --primary-lighter: #F0F8D9;
+  --primary-bg: #EFF5DD;
+  --accent-green: #789B19;
+  --accent-orange: var(--oc-alert-coral);
+  --accent-purple: #6C6F78;
+  --accent-pink: var(--oc-alert-coral);
+  --agent-c-color: #66766E;
+  --agent-a-color: #789B19;
+  --agent-b-color: #8D806F;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+  --shadow-sm: 0 1px 2px rgb(39 43 40 / 6%);
+  --shadow-md: 0 8px 24px rgb(39 43 40 / 8%);
+  --shadow-lg: 0 18px 48px rgb(39 43 40 / 14%);
+  --transition: 180ms cubic-bezier(.2, .8, .2, 1);
+
+  /* Compatibility aliases while the remaining views migrate away from Rhine tokens. */
+  --rhine-bg-main: var(--bg-page);
+  --rhine-bg-card: var(--bg-white);
+  --rhine-border: var(--border-color);
+  --rhine-primary: var(--oc-deep-graphite);
+  --rhine-accent-blue: #66766E;
+  --rhine-accent-orange: var(--oc-alert-coral);
+  --rhine-danger-red: var(--oc-alert-coral);
+  --rhine-text-muted: var(--text-light);
+
+  --el-color-primary: #789B19;
+  --el-color-success: #789B19;
+  --el-color-warning: #9A7548;
+  --el-color-danger: var(--oc-alert-coral);
+  --el-border-radius-base: 4px;
+  --el-border-radius-small: 4px;
+  --el-border-radius-round: 999px;
+  --el-box-shadow: var(--shadow-lg);
+  --el-box-shadow-light: var(--shadow-md);
+}
+
+.main-layout,
+.immersive-chat-layout,
+body.app-shell-active,
+body.chat-immersive-active {
+  --font-display: "Segoe UI Variable Display", "IBM Plex Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+  --font-family: "IBM Plex Sans SC", "PingFang SC", "Microsoft YaHei UI", "Segoe UI", sans-serif;
+  --font-chat: var(--font-family);
+  --font-utility: "IBM Plex Mono", "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --font-chat-data: var(--font-utility);
+  --font-data: var(--font-utility);
+  --font-mono: var(--font-utility);
+
+  --app-space-1: 4px;
+  --app-space-2: 8px;
+  --app-space-3: 12px;
+  --app-space-4: 16px;
+  --app-space-5: 24px;
+  --app-space-6: 32px;
+  --app-space-7: 48px;
+  --app-radius-control: 6px;
+  --app-radius-frame: 8px;
+  --app-border: 1px solid var(--app-line);
+  --app-clinical: var(--app-secondary);
+  --app-accent: var(--app-primary);
+  --app-accent-soft: var(--app-primary-soft);
+  --app-glass-frame: var(--app-glass-workspace);
+  --app-mobile-nav-height: 60px;
+
+  /* Compatibility aliases while each route migrates to the shared app tokens. */
+  --consult-space-1: var(--app-space-1);
+  --consult-space-2: var(--app-space-2);
+  --consult-space-3: var(--app-space-3);
+  --consult-space-4: var(--app-space-4);
+  --consult-space-5: var(--app-space-5);
+  --consult-space-6: var(--app-space-6);
+  --consult-space-7: var(--app-space-7);
+  --consult-space-8: 64px;
+  --consult-radius-control: var(--app-radius-control);
+  --consult-radius-panel: var(--app-radius-frame);
+  --consult-border: var(--app-border);
+  --consult-canvas: var(--app-canvas);
+  --consult-surface: var(--app-surface);
+  --consult-surface-subtle: var(--app-surface-subtle);
+  --consult-surface-raised: var(--app-surface-raised);
+  --consult-text: var(--app-text);
+  --consult-text-muted: var(--app-text-muted);
+  --consult-text-quiet: var(--app-text-quiet);
+  --consult-line: var(--app-line);
+  --consult-line-strong: var(--app-line-strong);
+  --consult-primary: var(--app-primary);
+  --consult-primary-ink: var(--app-primary-ink);
+  --consult-primary-soft: var(--app-primary-soft);
+  --consult-secondary: var(--app-secondary);
+  --consult-data: var(--app-data);
+  --consult-warning: var(--app-warning);
+  --consult-danger: var(--app-danger);
+  --consult-focus: var(--app-focus);
+  --consult-glass: var(--app-glass-tool);
+  --consult-scrim: var(--app-scrim);
+  --consult-shadow-float: var(--app-shadow-float);
+
+  --cq-page: var(--app-canvas);
+  --cq-surface: var(--app-surface);
+  --cq-surface-strong: var(--app-surface-subtle);
+  --cq-surface-raised: var(--app-surface-raised);
+  --cq-text: var(--app-text);
+  --cq-text-muted: var(--app-text-muted);
+  --cq-text-quiet: var(--app-text-quiet);
+  --cq-rule: var(--app-line);
+  --cq-rule-strong: var(--app-line-strong);
+  --cq-signal: var(--app-primary);
+  --cq-warning: var(--app-warning);
+  --cq-danger: var(--app-danger);
+  --cq-focus: var(--app-focus);
+  --cq-glass: var(--app-glass-tool);
+  --cq-scrim: var(--app-scrim);
+
+  --oc-mist-field: var(--app-text-quiet);
+  --oc-deep-graphite: var(--app-primary-ink);
+  --oc-optical-white: var(--app-inverse-text);
+  --oc-signal-lime: var(--app-primary);
+  --oc-warm-rule: var(--app-line-strong);
+  --oc-alert-coral: var(--app-danger);
+  --oc-surface: var(--app-surface);
+  --oc-text-muted: var(--app-text-quiet);
+  --oc-rehab-green: var(--app-primary);
+  --oc-rule-soft: var(--app-line);
+
+  --bg-page: var(--app-canvas);
+  --bg-white: var(--app-surface);
+  --bg-warm: var(--app-surface-raised);
+  --text-primary: var(--app-text);
+  --text-secondary: var(--app-text-muted);
+  --text-light: var(--app-text-quiet);
+  --border-color: var(--app-line);
+  --primary: var(--app-primary);
+  --primary-hover: var(--app-primary-hover);
+  --primary-dark: var(--app-primary-ink);
+  --primary-light: var(--app-primary-soft);
+  --primary-lighter: var(--app-surface-subtle);
+  --primary-bg: var(--app-primary-soft);
+  --accent-green: var(--app-primary);
+  --accent-orange: var(--app-danger);
+  --accent-purple: var(--app-data);
+  --accent-pink: var(--app-danger);
+  --agent-c-color: var(--app-text-muted);
+  --agent-a-color: var(--app-primary);
+  --agent-b-color: var(--app-secondary);
+  --shadow-sm: var(--app-shadow-soft);
+  --shadow-md: var(--app-shadow-medium);
+  --shadow-lg: var(--app-shadow-float);
+
+  --rhine-bg-main: var(--app-canvas);
+  --rhine-bg-card: var(--app-surface);
+  --rhine-border: var(--app-line);
+  --rhine-primary: var(--app-text);
+  --rhine-accent-blue: var(--app-data);
+  --rhine-accent-orange: var(--app-warning);
+  --rhine-danger-red: var(--app-danger);
+  --rhine-text-muted: var(--app-text-quiet);
+
+  color: var(--app-text);
+  background: transparent;
+  font-family: var(--font-family);
+  letter-spacing: 0;
+}
+
+.main-layout,
+.immersive-chat-layout,
+body.app-shell-active,
+body.chat-immersive-active {
+  --el-color-primary: var(--app-primary);
+  --el-color-success: var(--app-primary);
+  --el-color-warning: var(--app-warning);
+  --el-color-danger: var(--app-danger);
+  --el-bg-color: var(--app-surface);
+  --el-bg-color-overlay: var(--app-surface);
+  --el-text-color-primary: var(--app-text);
+  --el-text-color-regular: var(--app-text-muted);
+  --el-text-color-secondary: var(--app-text-quiet);
+  --el-border-color: var(--app-line);
+  --el-border-color-light: var(--app-line);
+  --el-border-color-lighter: var(--app-line);
+  --el-fill-color: var(--app-surface-raised);
+  --el-fill-color-light: var(--app-surface-subtle);
+  --el-fill-color-lighter: var(--app-surface-soft);
+  --el-fill-color-blank: var(--app-surface);
+  --el-mask-color: var(--app-scrim);
+  --el-box-shadow: var(--app-shadow-float);
+  --el-box-shadow-light: var(--app-shadow-medium);
+}
+
+html[data-theme="light"] .main-layout,
+html[data-theme="light"] body.app-shell-active,
+.immersive-chat-layout,
+body.chat-immersive-active {
+  --app-canvas: #F1F0F1;
+  --app-surface: rgba(245, 244, 245, 0.64);
+  --app-surface-subtle: rgba(249, 249, 249, 0.62);
+  --app-surface-soft: rgba(247, 247, 247, 0.76);
+  --app-surface-raised: rgba(238, 238, 238, 0.82);
+  --app-text: #1D2120;
+  --app-text-muted: #5F6162;
+  --app-text-quiet: #8E9091;
+  --app-inverse-text: #F1F4EE;
+  --app-line: rgba(155, 158, 158, 0.38);
+  --app-line-strong: rgba(155, 158, 158, 0.52);
+  --app-primary: #DF6925;
+  --app-primary-hover: #F06A1F;
+  --app-primary-ink: #FFFFFF;
+  --app-primary-soft: rgba(223, 105, 37, 0.08);
+  --app-secondary: #5F6162;
+  --app-data: #5F6162;
+  --app-warning: #DF6925;
+  --app-danger: #C65B48;
+  --app-danger-soft: rgba(198, 91, 72, 0.08);
+  --app-focus: #DF6925;
+  --app-glass-navigation: rgba(246, 246, 246, 0.68);
+  --app-glass-workspace: rgba(245, 244, 245, 0.54);
+  --app-glass-tool: rgba(247, 247, 247, 0.30);
+  --app-glass-fallback: rgba(245, 245, 245, 0.94);
+  --app-scrim: rgba(29, 33, 32, 0.36);
+  --app-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --app-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.03);
+  --app-shadow-float: 0 8px 30px rgba(255, 255, 255, 0.15);
+  --app-scroll-thumb: rgba(95, 97, 98, 0.22);
+  --app-scroll-thumb-hover: rgba(95, 97, 98, 0.36);
+  color-scheme: light;
+}
+
+html[data-theme="dark"] .main-layout,
+html[data-theme="dark"] body.app-shell-active,
+html[data-theme="dark"] {
+  /* 高保真深色科研终端色彩与材质 Token (Clinical Futurism System - Dark Mode) */
+  --page-bg: #090C0F;
+  --surface-main: rgba(13, 17, 23, 0.68);
+  --surface-light: rgba(20, 27, 38, 0.72);
+  --surface-inner: rgba(16, 22, 31, 0.78);
+  --surface-panel: rgba(15, 20, 28, 0.65);
+  --surface-panel-task: rgba(16, 22, 30, 0.60);
+
+  /* 深色模式 Base / Elevated 分层玻璃体系 */
+  --surface-base: rgba(12, 17, 24, 0.68);
+  --surface-elevated: rgba(20, 27, 38, 0.72);
+  --surface-elevated-hover: rgba(28, 38, 54, 0.82);
+  --surface-overlay: rgba(14, 19, 28, 0.94);
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+
+  --line-primary: rgba(255, 255, 255, 0.10);
+  --line-secondary: rgba(255, 255, 255, 0.07);
+  --line-soft: rgba(255, 255, 255, 0.08);
+  --line-highlight: rgba(255, 255, 255, 0.18);
+
+  --accent-orange: #DF6925;
+  --accent-orange-bright: #F06A1F;
+
+  --app-canvas: #090C0F;
+  --app-surface: rgba(15, 20, 26, 0.68);
+  --app-surface-subtle: rgba(20, 27, 38, 0.60);
+  --app-surface-soft: rgba(25, 33, 45, 0.72);
+  --app-surface-raised: rgba(22, 29, 40, 0.85);
+  --app-text: #FFFFFF;
+  --app-text-muted: #9CA3AF;
+  --app-text-quiet: #6B7280;
+  --app-inverse-text: #090C0F;
+  --app-line: rgba(255, 255, 255, 0.09);
+  --app-line-strong: rgba(255, 255, 255, 0.18);
+  --app-primary: #DF6925;
+  --app-primary-hover: #F06A1F;
+  --app-primary-ink: #FFFFFF;
+  --app-primary-soft: rgba(223, 105, 37, 0.12);
+  --app-secondary: #9CA3AF;
+  --app-data: #9CA3AF;
+  --app-warning: #DF6925;
+  --app-danger: #EF4444;
+  --app-danger-soft: rgba(239, 68, 68, 0.12);
+  --app-focus: #DF6925;
+  --app-glass-navigation: rgba(10, 13, 18, 0.85);
+  --app-glass-workspace: rgba(11, 15, 20, 0.60);
+  --app-glass-header: rgba(10, 13, 18, 0.65);
+  --app-glass-tool: rgba(16, 21, 28, 0.85);
+  --app-glass-fallback: rgba(11, 14, 18, 0.96);
+  --app-glass-surface: rgba(13, 18, 25, 0.68);
+  --app-scrim: rgba(0, 0, 0, 0.72);
+  --app-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --app-shadow-medium: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --app-shadow-float: 0 18px 48px rgba(0, 0, 0, 0.60);
+  --app-scroll-thumb: rgba(255, 255, 255, 0.18);
+  --app-scroll-thumb-hover: rgba(255, 255, 255, 0.30);
+  color-scheme: dark;
+}
+
+html[data-theme] body.app-shell-active {
+  color: var(--app-text);
+  background: var(--app-canvas);
+}
+
+body.chat-immersive-active {
+  color: var(--app-text);
+  background: var(--app-canvas);
+}
+
+body.app-shell-active .el-message {
+  top: 76px !important;
+  max-width: min(420px, calc(100vw - 32px));
+}
+
+.main-layout ::selection,
+.immersive-chat-layout ::selection {
+  color: var(--app-primary-ink);
+  background: var(--app-primary);
+}
+
+.main-layout ::-webkit-scrollbar-thumb,
+.immersive-chat-layout ::-webkit-scrollbar-thumb {
+  background: var(--app-scroll-thumb);
+}
+
+.main-layout ::-webkit-scrollbar-thumb:hover,
+.immersive-chat-layout ::-webkit-scrollbar-thumb:hover {
+  background: var(--app-scroll-thumb-hover);
+}
+
+.main-layout :focus-visible,
+.immersive-chat-layout :focus-visible {
+  outline-color: var(--app-focus);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html,
+body,
+#app {
+  min-height: 100%;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body { overflow: hidden; }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+::selection { color: var(--oc-deep-graphite); background: var(--oc-signal-lime); }
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #BCC2BB; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #8F968E; }
+
+:focus-visible { outline: 2px solid #789B19; outline-offset: 2px; }
+
+.fade-enter-active,
+.fade-leave-active { transition: opacity var(--transition), transform var(--transition); }
+.fade-enter-from,
+.fade-leave-to { opacity: 0; transform: translateY(4px); }
+
+.agent-c { color: var(--agent-c-color); }
+.agent-a { color: var(--agent-a-color); }
+.agent-b { color: var(--agent-b-color); }
+.tech-font { font-family: var(--font-utility); letter-spacing: 0; }
+.rhine-brand { font-family: var(--font-display); letter-spacing: 0; }
+.is-page-hidden .intro-field,
+.is-page-hidden .semantic-stream { animation-play-state: paused !important; }
+
+.consultation-shell-scan {
+  position: fixed;
+  z-index: 2147483647;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100dvh;
+  background: #F0642E;
+  pointer-events: none;
+  view-transition-name: consultation-scan;
+}
+
+html[data-consultation-transition]::view-transition-group(root) {
+  isolation: isolate;
+  animation-duration: 290ms;
+}
+
+html[data-consultation-transition]::view-transition-old(root),
+html[data-consultation-transition]::view-transition-new(root) {
+  width: 100%;
+  height: 100%;
+  animation-duration: 290ms;
+  animation-fill-mode: both;
+  mix-blend-mode: normal;
+}
+
+html[data-consultation-transition='enter']::view-transition-old(root) {
+  z-index: 1;
+  animation-name: consultation-shell-recede;
+}
+
+html[data-consultation-transition='enter']::view-transition-new(root) {
+  z-index: 2;
+  animation-name: consultation-slice-enter;
+}
+
+html[data-consultation-transition='exit']::view-transition-old(root) {
+  z-index: 2;
+  animation-name: consultation-slice-exit;
+}
+
+html[data-consultation-transition='exit']::view-transition-new(root) {
+  z-index: 1;
+  animation-name: consultation-shell-steady;
+}
+
+html[data-consultation-transition]::view-transition-group(consultation-scan) {
+  z-index: 2147483647;
+  animation-duration: 290ms;
+  animation-fill-mode: both;
+}
+
+html[data-consultation-transition]::view-transition-old(consultation-scan),
+html[data-consultation-transition]::view-transition-new(consultation-scan) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-consultation-transition='enter']::view-transition-group(consultation-scan) {
+  animation-name: consultation-scan-enter;
+  animation-timing-function: cubic-bezier(.22, .76, .28, 1);
+}
+
+html[data-consultation-transition='exit']::view-transition-group(consultation-scan) {
+  animation-name: consultation-scan-exit;
+  animation-timing-function: cubic-bezier(.55, .06, .68, .19);
+}
+
+html[data-consultation-transition='enter']::view-transition-group(root),
+html[data-consultation-transition='enter']::view-transition-old(root),
+html[data-consultation-transition='enter']::view-transition-new(root) {
+  animation-timing-function: cubic-bezier(.22, .76, .28, 1);
+}
+
+html[data-consultation-transition='exit']::view-transition-group(root),
+html[data-consultation-transition='exit']::view-transition-old(root),
+html[data-consultation-transition='exit']::view-transition-new(root) {
+  animation-timing-function: cubic-bezier(.55, .06, .68, .19);
+}
+
+@keyframes consultation-slice-enter {
+  from {
+    clip-path: inset(0 100% 0 0);
+    box-shadow: 5px 0 0 #F0642E;
+    filter: drop-shadow(5px 0 0 #F0642E) saturate(.82);
+  }
+  to {
+    clip-path: inset(0);
+    box-shadow: 0 0 0 transparent;
+    filter: drop-shadow(0 0 0 transparent) saturate(1);
+  }
+}
+
+@keyframes consultation-slice-exit {
+  from {
+    clip-path: inset(0);
+    box-shadow: 0 0 0 transparent;
+    filter: drop-shadow(0 0 0 transparent) saturate(1);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
+    box-shadow: 5px 0 0 #F0642E;
+    filter: drop-shadow(5px 0 0 #F0642E) saturate(.82);
+  }
+}
+
+@keyframes consultation-shell-recede {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: saturate(1);
+  }
+  to {
+    opacity: .96;
+    transform: scale(.992);
+    filter: saturate(.86);
+  }
+}
+
+@keyframes consultation-shell-steady {
+  from { opacity: 1; }
+  to { opacity: 1; }
+}
+
+@keyframes consultation-scan-enter {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw - 3px)); }
+}
+
+@keyframes consultation-scan-exit {
+  from { transform: translateX(calc(100vw - 3px)); }
+  to { transform: translateX(0); }
+}
+
+@media (max-width: 767px) {
+  .consultation-shell-scan {
+    width: 100vw;
+    height: 3px;
+  }
+
+  html[data-consultation-transition]::view-transition-group(root),
+  html[data-consultation-transition]::view-transition-old(root),
+  html[data-consultation-transition]::view-transition-new(root),
+  html[data-consultation-transition]::view-transition-group(consultation-scan) {
+    animation-duration: 260ms;
+  }
+
+  html[data-consultation-transition='enter']::view-transition-new(root) {
+    animation-name: consultation-slice-enter-mobile;
+  }
+
+  html[data-consultation-transition='exit']::view-transition-old(root) {
+    animation-name: consultation-slice-exit-mobile;
+  }
+
+  html[data-consultation-transition='enter']::view-transition-group(consultation-scan) {
+    animation-name: consultation-scan-enter-mobile;
+  }
+
+  html[data-consultation-transition='exit']::view-transition-group(consultation-scan) {
+    animation-name: consultation-scan-exit-mobile;
+  }
+}
+
+@keyframes consultation-slice-enter-mobile {
+  from {
+    clip-path: inset(100% 0 0);
+    box-shadow: 0 -5px 0 #F0642E;
+    filter: drop-shadow(0 -5px 0 #F0642E) saturate(.82);
+  }
+  to {
+    clip-path: inset(0);
+    box-shadow: 0 0 0 transparent;
+    filter: drop-shadow(0 0 0 transparent) saturate(1);
+  }
+}
+
+@keyframes consultation-slice-exit-mobile {
+  from {
+    clip-path: inset(0);
+    box-shadow: 0 0 0 transparent;
+    filter: drop-shadow(0 0 0 transparent) saturate(1);
+  }
+  to {
+    clip-path: inset(100% 0 0);
+    box-shadow: 0 -5px 0 #F0642E;
+    filter: drop-shadow(0 -5px 0 #F0642E) saturate(.82);
+  }
+}
+
+@keyframes consultation-scan-enter-mobile {
+  from { transform: translateY(calc(100dvh - 3px)); }
+  to { transform: translateY(0); }
+}
+
+@keyframes consultation-scan-exit-mobile {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(100dvh - 3px)); }
+}
+
+html[data-consultation-motion='reduced']::view-transition-group(root),
+html[data-consultation-motion='reduced']::view-transition-old(root),
+html[data-consultation-motion='reduced']::view-transition-new(root) {
+  animation-duration: 90ms;
+  animation-timing-function: linear;
+}
+
+html[data-consultation-motion='reduced']::view-transition-old(root) {
+  animation-name: consultation-fade-out;
+}
+
+html[data-consultation-motion='reduced']::view-transition-new(root) {
+  animation-name: consultation-fade-in;
+}
+
+@keyframes consultation-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes consultation-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.el-button {
+  min-height: 36px;
+  border-radius: 4px !important;
+  font-family: var(--font-family);
+  font-weight: 650;
+  letter-spacing: 0;
+  transition: color var(--transition), background-color var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.el-button--primary { color: var(--primary-dark) !important; background: var(--primary) !important; border-color: var(--primary) !important; }
+.el-button--primary:hover, .el-button--primary:focus-visible { background: var(--primary-hover, #DCF98A) !important; border-color: var(--primary-hover, #DCF98A) !important; }
+.el-button--success { color: var(--primary-dark) !important; background: var(--primary-light) !important; border-color: var(--primary-light) !important; }
+.el-button--default { color: var(--text-primary) !important; background: var(--bg-white) !important; border-color: var(--border-color) !important; }
+.el-button--default:hover, .el-button--default:focus-visible { color: var(--text-primary) !important; background: var(--primary-bg) !important; border-color: var(--primary) !important; }
+.el-button.is-circle { min-width: 36px; border-radius: 50% !important; }
+
+.el-card {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.el-input__wrapper,
+.el-textarea__inner {
+  border-radius: 4px !important;
+  font-family: var(--font-family);
+  box-shadow: 0 0 0 1px var(--border-color) inset !important;
+}
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus { box-shadow: 0 0 0 2px #789B19 inset !important; }
+
+.el-dialog,
+.el-dropdown-menu,
+.el-select-dropdown {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+@media (max-width: 767px) {
+  body.app-shell-active .el-message {
+    top: calc(60px + env(safe-area-inset-top)) !important;
+    width: max-content;
+    max-width: calc(100vw - 24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* =========================================================================
+   精密切角技术面板与 HUD 工业终端组件基础规范 (Chamfered Technical Panel)
+   ========================================================================= */
+
+/* 半透明切角面板基类：8~12px 微切角、1px 细边框、轻度磨砂玻璃 */
+.tech-chamfer-panel {
+  position: relative;
+  background: var(--surface-main, rgba(245, 244, 245, 0.64));
+  border: 1px solid var(--line-primary, rgba(155, 158, 158, 0.46));
+  backdrop-filter: blur(6px) saturate(106%);
+  -webkit-backdrop-filter: blur(6px) saturate(106%);
+  clip-path: polygon(
+    10px 0, calc(100% - 10px) 0,
+    100% 10px, 100% calc(100% - 10px),
+    calc(100% - 10px) 100%, 10px 100%,
+    0 calc(100% - 10px), 0 10px
+  );
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+/* 面板角落细微直角标记 (Corner Tick Marks) */.tech-corner-marks::before {
+  top: 3px;
+  left: 3px;
+  border-top: 1.5px solid var(--accent-orange, #DF6925);
+  border-left: 1.5px solid var(--accent-orange, #DF6925);
+}
+.tech-corner-marks::after {
+  bottom: 3px;
+  right: 3px;
+  border-bottom: 1.5px solid var(--line-primary, rgba(155, 158, 158, 0.46));
+  border-right: 1.5px solid var(--line-primary, rgba(155, 158, 158, 0.46));
+}
+
+/* 极细横向基准测量线 */
+.tech-measure-line {
+  height: 1px;
+  background: var(--line-secondary, rgba(190, 192, 192, 0.40));
+  width: 100%;
+}
+
+/* 深色模式下的技术切角面板与直角微标 */
+html[data-theme="dark"] .tech-chamfer-panel {
+  background: var(--surface-main, rgba(13, 17, 23, 0.65));
+  border-color: var(--line-primary, rgba(255, 255, 255, 0.09));
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .tech-corner-marks::after {
+  border-bottom-color: var(--line-primary, rgba(255, 255, 255, 0.18));
+  border-right-color: var(--line-primary, rgba(255, 255, 255, 0.18));
+}
+
+html[data-theme="dark"] .chamfer-corner--tr,
+html[data-theme="dark"] .chamfer-corner--bl {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* =========================================================================
+   Element Plus 遮罩层与弹窗毛玻璃模糊规范 (Global Dialog Overlay Backdrop Blur)
+   - 遮罩层毛玻璃柔和模糊背景（backdrop-filter: blur）
+   - 前景弹窗 100% 实色无透明度，杜绝底层文字重叠
+   ========================================================================= */
+
+.el-overlay,
+.sci-dialog-overlay-blur {
+  background-color: rgba(15, 23, 42, 0.48) !important;
+  backdrop-filter: blur(12px) saturate(115%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(115%) !important;
+  transition: backdrop-filter 0.2s ease, background-color 0.2s ease !important;
+}
+
+.el-overlay.is-message-box {
+  backdrop-filter: blur(10px) saturate(110%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(110%) !important;
+}
+
+/* 临床科研终端弹窗高保真实体背景与立体阴影 */
+.el-dialog.clinical-goal-modal,
+.el-dialog.prescription-modal,
+.el-dialog.clinical-assessment-modal {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(175, 180, 180, 0.5) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32), 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden !important;
+}
